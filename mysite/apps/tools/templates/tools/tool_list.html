@@ -1,0 +1,48 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block head_title %}在线工具{% endblock %}
+
+{% block metas %}
+<meta name="description" content="在线工具，好用的站长工具、编程工具都在这里！">
+<meta name="keywords" content="在线工具,jerrycoding">
+{% endblock %}
+
+
+    {% block base_left_block %}
+    {% include 'mainapp/base_left.html' %}
+    {% endblock %}
+
+        <!-- Middle -->
+        <!-- 面包屑导航 -->
+        {% block base_middle_block %}
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb f-17">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item active " aria-current="page">在线工具</li>
+              </ol>
+            </nav>
+            <div class="row">
+            {% for each in tools %}
+                <div class="col-6 col-sm-4">
+                    <div class="my-card card mb-3" >
+                      <a href="{% url 'tools:tool_detail_url' each.slug %}">
+                          <img class="card-img-top p-3" src="{{each.img_link.url}}" alt="{{ each.name }}">
+                      </a>
+                      <div class="card-body text-center p-1">
+                          <a href="{% url 'tools:tool_detail_url' each.slug %}">
+                              <b class="f-17">{{ each.name }}</b>
+                          </a>
+                          <p class="card-text f-16"><small>{{each.summary}}</small></p>
+                      </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        {% endblock %}
+
+    <!-- Right -->
+    {% block base_right_block %}
+    {% include 'mainapp/base_right.html' %}
+    {% endblock %}

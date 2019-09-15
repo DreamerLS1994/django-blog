@@ -1,0 +1,128 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block head_title %}{{ this_article.title }}_{{ this_article.catalogue.name }}{% endblock %}
+
+{% block metas %}
+<meta name="description" content="{{this_article.summary}}">
+<meta name="keywords" content="{{this_article.keywords}}">
+{% endblock %}
+
+
+    {% block base_left_block %}
+    {% include 'mainapp/base_left.html' %}
+    {% endblock %}
+
+        <!-- Middle -->
+        {% block base_middle_block %}
+        <!-- 面包屑导航 -->
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb f-17">
+            <li class="breadcrumb-item"><a href="/">首页</a></li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'mainapp:catalogue_detail_url' this_article.catalogue.slug %}" target="_blank">
+                    {{ this_article.catalogue }}
+                </a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ this_article.title }}</li>
+          </ol>
+        </nav>
+	
+        <div class="card">
+          <h1 class="card-header text-center text-white bg-primary f-17"><b>{{ this_article.title }}</b></h1>
+          <div class="card-body" id="my-article-body">
+              <div class="text-center text-muted">
+                  <div class="f-13">
+                      <span data-toggle="tooltip" data-placement="bottom" title="作者">
+                          <i class="my-fa fa fa-user" aria-hidden="true"></i>
+                          {{ this_article.author }}
+                      </span>
+                      <span data-toggle="tooltip" data-placement="bottom" title="最后更新">
+                          <i class="my-fa fa fa-calendar ml-2" aria-hidden="true"></i>
+                          {{ this_article.update_date|naturalday }}
+                      </span>
+                      <span data-toggle="tooltip" data-placement="bottom" title="阅读量">
+                          <i class="my-fa fa fa-eye ml-2" aria-hidden="true"></i>
+                          {{this_article.readings}}
+                      </span>&nbsp;
+                  </div>
+              </div>
+              <hr>
+              <div class="f-16">{{ this_article.body|safe }}</div>
+              <hr>
+              <div class="text-primary text-center f-13">
+                  <i class="my-fa fa fa-bullhorn" aria-hidden="true"></i>
+                  原创文章，转载请注明出处：<a href="{% url 'mainapp:article_detail_url' this_article.slug %}">
+                  https://xxxxxx.com/article/{{ this_article.slug }}</a>
+              </div>
+              <div class="text-center text-muted f-15 mt-2">
+                  <small>
+                      <a href="{% url 'mainapp:catalogue_detail_url' this_article.catalogue.slug %}" target="_blank">
+                          <span data-toggle="tooltip" data-placement="bottom" title="分类">
+                              <i class="my-fa fa fa-book" aria-hidden="true">
+                              《{{ this_article.catalogue.name}}》</i>
+                          </span>
+                      </a>
+                      <span data-toggle="tooltip" data-placement="bottom" title="评论">
+                          <i class="my-fa fa fa-comments ml-2" aria-hidden="true"></i>
+                          {{ this_article.get_comment_count }}
+                      </span>
+                      <a id="btn_like_article" href=""
+                         data-article-id="{{ this_article.id }}" data-csrf="{{ csrf_token }}"
+                         data-ajax_url="{% url 'mainapp:article_like_url' %}">
+                          <span data-toggle="tooltip" data-placement="bottom" title="点赞">
+                              <i class="my-fa fa fa-thumbs-up ml-2" aria-hidden="true"></i>
+                              {{ this_article.like_num }}
+                          </span>
+                      </a>
+                  </small>
+              </div>
+              {% if settings.is_award is True %}
+                  <hr>
+                  {% include 'mainapp/parts/award.html' %}
+              {% endif %}
+              <br> 
+              <div class="f-15">
+              {% if this_article.get_pre.get_url %}
+                  <a class="float-left d-block d-sm-none" href="{{this_article.get_pre.get_url}}
+                        " data-toggle="tooltip" data-placement="bottom" title="{{this_article.get_pre.title}}">
+                      <i class="my-fa fa fa-arrow-left" aria-hidden="true"></i>上一篇
+                  </a>
+                  <a class="float-left d-none d-sm-block" href="{{this_article.get_pre.get_url}}"
+                     data-toggle="tooltip" data-placement="bottom" title="{{this_article.get_pre.title}}">
+                      <i class="my-fa fa fa-arrow-left" aria-hidden="true"></i>{{this_article.get_pre.title|truncatechars:15}}
+                  </a>
+                  {% endif %}
+                  {% if this_article.get_next.get_url %}
+                  <a class="float-right d-block d-sm-none" href="{{this_article.get_next.get_url}}"
+                     data-toggle="tooltip" data-placement="bottom" title="{{this_article.get_next.title}}">
+                      下一篇<i class="my-fa fa fa-arrow-right" aria-hidden="true"></i>
+                  </a>
+                  <a class="float-right d-none d-sm-block" href="{{this_article.get_next.get_url}}"
+                     data-toggle="tooltip" data-placement="bottom" title="{{this_article.get_next.title}}">
+                      {{this_article.get_next.title|truncatechars:15}}
+                      <i class="my-fa fa fa-arrow-right" aria-hidden="true"></i>
+                  </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        {% if this_article.is_comment %}
+            {% include 'comment/comment_form.html' %}
+            {% include 'comment/comment_list.html' %}
+        {% else %}
+        <div class="card mt-2 mb-2 f-17">
+          <div class="card-body text-center bg-muted p-2 text-danger">
+            <h5><b>啊偶！评论被关闭了..😀</b></h5>
+          </div>
+        </div>
+        {% endif %}
+
+        {% endblock %}
+
+	    <!-- Right -->
+    {% block base_right_block %}
+    {% include 'mainapp/base_right.html' %}
+    {% endblock %}
+

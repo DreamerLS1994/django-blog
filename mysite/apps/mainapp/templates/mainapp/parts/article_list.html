@@ -1,0 +1,60 @@
+{% load static %}
+{% load humanize %}
+
+<!--普通文章显示-->
+
+{% for each in articles %}
+<div class="my-card card mb-3">
+  <div class="card-body">
+    <div class="media">
+             <img class="align-self-center mr-3 w-25 my-img" src="{{ each.img.url }}" alt="{{ each.title }}"/>
+      <div class="media-body">
+          {% if each.is_top == True %}
+        <i class="my-marktop fa fa-thumb-tack fa-lg position-absolute" aria-hidden="true" title="文章置顶"></i>
+          {% endif %}
+        <h1 class="mt-0 f-17">
+            <a href="{% url 'mainapp:article_detail_url' each.slug %}" target="_blank"><b>{{each.title}}</b>
+            </a>
+        </h1>
+            <p class="f-15">{{ each.summary }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-muted">
+      <div class="f-12">
+          <a href="{% url 'mainapp:catalogue_detail_url' each.catalogue.slug %}" target="_blank">
+              <span><i class="my-fa fa fa-book" aria-hidden="true">《{{ each.catalogue.name}}》</i></span>
+          </a>
+          <span><i class="my-fa fa fa-calendar ml-2" aria-hidden="true"></i>{{ each.create_date|naturalday }}</span>
+          <span><i class="my-fa fa fa-eye ml-2" aria-hidden="true"></i>{{each.readings}}</span>&nbsp;
+          <span><i class="my-fa fa fa-comments ml-2" aria-hidden="true"></i>{{ each.get_comment_count }}</span>
+          <span><i class="my-fa fa fa-thumbs-up ml-2" aria-hidden="true"></i>{{ each.like_num }}</span>
+          <a class="float-right d-none d-lg-block" href="{% url 'mainapp:article_detail_url' each.slug %}" target="_blank">
+              <b class="text-danger">开始阅读→</b></a>
+
+      </div>
+  </div>
+</div>
+
+{% endfor %}
+{% if articles.has_previous or articles.has_next %}
+<div class="m-4 f-16">
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <li class="page-item">
+            {% if articles.has_previous %}
+          <a class="page-link" href="?page={{ articles.previous_page_number }}">上一页</a>
+            {% endif %}
+        </li>
+        <li class="page-item">
+            <a class="page-link disabled">{{articles.number}}/{{articles.paginator.num_pages}}</a>
+        </li>
+        <li class="page-item">
+            {% if articles.has_next %}
+          <a class="page-link" href="?page={{ articles.next_page_number }}">下一页</a>
+            {% endif %}
+        </li>
+      </ul>
+    </nav>
+</div>
+{% endif %}

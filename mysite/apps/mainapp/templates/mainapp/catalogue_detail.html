@@ -1,0 +1,46 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block head_title %}{{ this_catalogue.name }}_文章分类{% endblock %}
+
+{% block metas %}
+<meta name="description" content="{{this_catalogue.summary}}">
+<meta name="keywords" content="{{this_catalogue.keywords}}">
+{% endblock %}
+
+
+    {% block base_left_block %}
+    {% include 'mainapp/base_left.html' %}
+    {% endblock %}
+
+    <!-- Middle -->
+    <!-- 面包屑导航 -->
+    {% block base_middle_block %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb f-17">
+        <li class="breadcrumb-item"><a href="/">首页</a></li>
+        <li class="breadcrumb-item active " aria-current="page">{{ this_catalogue.name }}</li>
+      </ol>
+    </nav>
+
+    <!-- 目录说明 -->
+    <div class="card mb-2">
+      <div class="card-header f-17">
+          <b><i class="my-fa fa fa-book" aria-hidden="true"></i>{{ this_catalogue.name }}</b>
+          <span class="float-right">共 {{ this_catalogue.get_articlecount }} 篇</span>
+      </div>
+      <div class="card-body">
+        <p class="card-text f-16">{{ this_catalogue.summary }}</p>
+      </div>
+    </div>
+
+    <!-- 文章列表 -->
+    {% include 'mainapp/parts/article_list.html' %}
+    {% endblock %}
+
+	    <!-- Right -->
+    {% block base_right_block %}
+    {% include 'mainapp/base_right.html' %}
+    {% endblock %}
+

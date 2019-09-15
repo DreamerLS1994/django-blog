@@ -1,0 +1,114 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- 网站元 -->
+  {% block metas %}
+    <meta name="keywords" content="{{ settings.keywords }}">
+    <meta name="description" content="{{ settings.desc }}">
+  {% endblock %}
+
+    <title>{% block head_title %}主页{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+     <link href="{% static 'mainapp/css/mainapp.css' %}" rel="stylesheet">
+     <link href="/media/favicon/favicon.ico" rel="shortcut icon">
+     {% block css-file %}{% endblock %}
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="{% static 'mainapp/js/mainapp.js' %}" crossorigin="anonymous"></script>
+    {% block js-file %}{% endblock %}
+    <script src="{% static 'mainapp/js/clockjs/zzsz.js'%}"></script>
+
+
+
+  </head>
+  <body style="background-color: powderblue;">
+    <!--导航-->
+    {% include 'mainapp/parts/navbar.html' %}
+    <!--消息块-->
+    {% if messages %}
+    <div class="container">
+     {% for message in messages %}
+      <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-warning{% endif %} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+     {% endfor %}
+    </div>
+    {% endif %}
+
+     <!--返回顶部-->
+    <div class="top" title="返回顶部" style="display:none; position:fixed;bottom:100px;right:50px;cursor:pointer;z-index:2;width:50px">
+        <a onclick="returnTop();" ><img src="https://cdn.jerrycoding.com/media/top/top.png"></img></a>
+    </div>
+
+        <!-- 模态框（Modal） -->
+    <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog"
+         aria-hidden="true" >
+        <div class="modal-dialog" role="img" style="max-width: 1000px;">
+            <div class="modal-content">
+                <div class="modal-header bg-muted">
+                    <b class="modal-title f-15">查看图片</b>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <img class="w-100" src="">
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+    <!--主体-->
+    <main style="min-height:980px;" >
+
+    <div class="container">
+        <div class="row">
+            <!-- Left -->
+            <div class="col-lg-2 d-none d-lg-block">
+                {% block base_left_block %}
+                {% endblock %}
+            </div>
+
+            <!-- Middle -->
+            <div class="col-lg-7 col-md-8">
+
+                {% block base_middle_block %}
+                {% endblock %}
+ 		
+            </div>
+
+            <!-- Right -->
+            <div class="col-lg-3 col-md-4">
+                {% block base_right_block %}
+                {% endblock %} 
+
+            </div>
+        </div>
+    </div>
+    </main>
+
+    <!--脚注-->
+    {% include 'mainapp/parts/footer.html' %}
+  </body>
+</html>

@@ -1,0 +1,4 @@
+{% load i18n %}
+{% autoescape off %}
+注册邮箱激活通知
+{% endautoescape %}

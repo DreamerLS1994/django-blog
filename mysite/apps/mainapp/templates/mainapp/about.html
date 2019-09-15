@@ -1,0 +1,43 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block head_title %}关于本站{% endblock %}
+
+{% block metas %}
+<meta name="description" content="本站详细介绍，包括本站介绍、博主介绍等。本站是django + bootstrap3搭建的个人博客，博主Jerry。主要记录Jerry编程中的学习笔记，可以理解成一个备忘录网站。这里有博主的建站历程、python学习笔记以及好玩的小程序。希望对你有帮助！一起加油！">
+<meta name="keywords" content="关于本站,关于博主">
+{% endblock %}
+
+<!-- Left -->
+    {% block base_left_block %}
+    {% include 'mainapp/base_left.html' %}
+    {% endblock %}
+
+<!-- Middle -->
+{% block base_middle_block %}
+<!-- 面包屑导航 -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb f-17">
+        <li class="breadcrumb-item"><a href="/">首页</a></li>
+        <li class="breadcrumb-item active " aria-current="page">本站说明</li>
+      </ol>
+    </nav>
+
+    <!-- 详细关于 -->
+    {% for each in abouts %}
+    <div class="card f-16 mb-3">
+      <div class="card-header">
+          <b><i class="my-fa fa fa-flag" aria-hidden="true"></i>{{ each.name }}</b>
+      </div>
+      <div class="card-body p-1">
+        <p class="card-text">{{ each.body|safe }}</p>
+      </div>
+    </div>
+    {% endfor %}
+{% endblock %}
+
+    <!-- Right -->
+    {% block base_right_block %}
+    {% include 'mainapp/base_right.html' %}
+    {% endblock %}

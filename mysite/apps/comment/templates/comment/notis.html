@@ -1,0 +1,84 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block head_title %}
+
+{% if request.path == '/comment/notification/all/' %}
+全部消息_消息通知
+{% elif request.path == '/comment/notification/unread/' %}
+未读消息_消息通知
+{% endif %}
+
+{% endblock %}
+
+{% block metas %}
+
+{% if request.path == '/comment/notification/all/' %}
+<meta name="description" content="这里是你在本站所有的全部消息。">
+<meta name="keywords" content="全部消息,jerrycoding">
+{% elif request.path == '/comment/notification/unread/' %}
+<meta name="description" content="这里是你在本站所有的未读消息。">
+<meta name="keywords" content="未读消息,jerrycoding">
+{% endif %}
+
+{% endblock %}
+
+{% block js-file %}
+<script src="{% static 'comment/js/noti.js' %}"></script>
+{% endblock %}
+
+    {% block base_left_block %}
+    {% include 'mainapp/base_left.html' %}
+    {% endblock %}
+
+        <!-- Middle -->
+{% block base_middle_block %}
+
+    <ul class="nav nav-tabs">
+      <li class="nav-item f-17">
+          {% if request.path == '/comment/notification/unread/' %}
+          <a class="nav-link active" href="/comment/notification/unread"><i class="my-fa fa fa-bell-o" aria-hidden="true"></i>未读消息</a>
+          {% else %}
+          <a class="nav-link" href="/comment/notification/unread"><i class="my-fa fa fa-bell-o" aria-hidden="true"></i>未读消息</a>
+          {% endif %}
+      </li>
+      <li class="nav-item f-17">
+          {% if request.path == '/comment/notification/all/' %}
+          <a class="nav-link active" href="/comment/notification/all"><i class="my-fa fa fa-bell" aria-hidden="true"></i>全部消息</a>
+          {% else %}
+          <a class="nav-link" href="/comment/notification/all"><i class="my-fa fa fa-bell" aria-hidden="true"></i>全部消息</a>
+          {% endif %}
+      </li>
+    </ul>
+
+    <!-- 消息通知 -->
+    <div class="card ">
+          {% if request.path == '/comment/notification/all/' %}
+      <div class="card-header text-white bg-info f-17">
+          <i class="my-fa fa fa-bell-o" aria-hidden="true"></i>全部消息：
+          <span class="float-right">共 {{ notis|length }} 条</span>
+      </div>
+      <div class="card-body f-16">
+        <p class="card-text ">嗨！快来看看你收到的所有消息吧！</p>
+      </div>
+          {% elif request.path == '/comment/notification/unread/' %}
+      <div class="card-header text-white bg-info f-17">
+          <i class="my-fa fa fa-bell" aria-hidden="true"></i>未读消息：
+          <span class="float-right">共 {{ notis|length }} 条</span>
+      </div>
+      <div class="card-body f-16">
+        <p class="card-text">嗨！快来看看谁又提到了你呢？</p>
+      </div>
+          {% endif %}
+    </div>
+
+    <!-- 消息列表 -->
+    {% include 'comment/parts/noti_list.html' %}
+
+{% endblock%}
+	    <!-- Right -->
+    {% block base_right_block %}
+    {% include 'mainapp/base_right.html' %}
+    {% endblock %}
+

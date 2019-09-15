@@ -1,0 +1,63 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block head_title %}{{ this_tool.name }}_在线工具{% endblock %}
+
+{% block metas %}
+<meta name="description" content="{{this_tool.summary}}">
+<meta name="keywords" content="{{ this_tool.name }}">
+{% endblock %}
+
+{% block js-file %}
+<script src="{% static 'tools/js/tools.js' %}"></script>
+{% endblock %}
+
+    {% block base_left_block %}
+    {% include 'mainapp/base_left.html' %}
+    {% endblock %}
+
+        <!-- Middle -->
+        {% block base_middle_block %}
+        <!-- 面包屑导航 -->
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb f-17">
+            <li class="breadcrumb-item"><a href="/">首页</a></li>
+            <li class="breadcrumb-item">
+                <a href="/tools">在线工具</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{ this_tool.name }}</li>
+          </ol>
+        </nav>
+
+        <div class="card mb-3">
+          <h3 class="card-header text-center text-white bg-primary f-17"><b>{{ this_tool.name }}</b></h3>
+          <div class="card-body">
+              <div class="text-center text-muted f-13">
+                  <small>
+                      <span><i class="my-fa fa fa-calendar ml-2" aria-hidden="true"></i>{{ this_tool.create_date|naturalday }}</span>
+                      <span><i class="my-fa fa fa-eye ml-2" aria-hidden="true"></i>{{this_tool.readings}}</span>
+                      <a id="btn_like_tool" href=""
+                         data-tool_id="{{ this_tool.id }}" data-csrf="{{ csrf_token }}"
+                         data-ajax_url="{% url 'tools:tool_like_url' %}">
+                        <span><i class="my-fa fa fa-thumbs-up ml-2" aria-hidden="true"></i>{{ this_tool.likes }}</span>
+                      </a>
+                  </small>
+              </div>
+              <hr>
+              <div class="f-16">{{ this_tool.body|safe }}</div>
+
+              {% if settings.is_award is True %}
+              <hr>
+              {% include 'mainapp/parts/award.html' %}
+              {% endif %}
+
+          </div>
+        </div>
+
+        {% endblock %}
+
+    <!-- Right -->
+    {% block base_right_block %}
+    {% include 'mainapp/base_right.html' %}
+    {% endblock %}

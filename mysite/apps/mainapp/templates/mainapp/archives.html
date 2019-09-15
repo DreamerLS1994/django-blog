@@ -1,0 +1,51 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block head_title %}文章归档{% endblock %}
+
+{% block metas %}
+<meta name="description" content="本站文章归档界面，所有历史文章归档于此。">
+<meta name="keywords" content="文章归档,jerrycoding">
+{% endblock %}
+
+
+    <!-- Left -->
+    {% block base_left_block %}
+    {% include 'mainapp/base_left.html' %}
+    {% endblock %}
+
+    <!-- Middle -->
+{% block base_middle_block %}
+    <!-- 面包屑导航 -->
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb f-17">
+            <li class="breadcrumb-item"><a href="/">首页</a></li>
+            <li class="breadcrumb-item active " aria-current="page">归档</li>
+          </ol>
+        </nav>
+        <div class="card mb-2">
+            <div class="card-body p-1 f-16">
+            {% for each in dates %}
+                <h5>{{each}}</h5>
+                <ul>
+                {% for each2 in articles %}
+                    {% if each2.create_date|date:"Y-m" == each %}
+                        <li>
+                        <small>{{ each2.create_date|date:"d" }}日</small>
+                        <a href="{% url 'mainapp:article_detail_url' each2.slug %}" target="_blank">
+                            {{each2.title}}</a>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+                </ul>
+            {% endfor %}
+            </div>
+        </div>
+
+{% endblock %}
+
+	    <!-- Right -->
+    {% block base_right_block %}
+    {% include 'mainapp/base_right.html' %}
+    {% endblock %}

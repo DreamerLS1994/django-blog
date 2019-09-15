@@ -1,0 +1,37 @@
+{% load static %}
+{% load humanize %}
+
+<!--消息通知显示-->
+
+{% for each in notis %}
+<div class="my-card card mt-2 mb-2">
+        {% if request.path == '/comment/notification/all/' %}
+    <div class="card-header f-17">
+        <b>{{ each.sender }}</b> 在
+        <u><a href="{% url 'mainapp:article_detail_url' each.belong.belong.slug %}#cmt-{{ each.belong.id }}">
+      《{{ each.belong.belong.title }}》</a></u>中回复了你：
+    </div>
+        {% elif request.path == '/comment/notification/unread/' %}
+    <div class="card-header bg-warning f-17">
+        <b>{{ each.sender }}</b> 在
+        <u><a href="{% url 'mainapp:article_detail_url' each.belong.belong.slug %}#cmt-{{ each.belong.id }}">
+      《{{ each.belong.belong.title }}》</a></u>中回复了你：
+    </div>
+        {% endif %}
+
+    <div class="card-body p-2 f-16">
+      {{ each.belong.body|safe }}
+    </div>
+    <div class="card-footer text-muted p-1 f-16">
+        <small>{{ each.belong.create_date|naturaltime }}</small>
+        {% if request.path == '/comment/notification/all/' %}
+        <a class="float-right btn btn-danger p-0 text-white noti_delete f-16" id="noti_delete" data-noti_id="{{ each.id }}" data-csrf="{{ csrf_token }}"
+           data-ajax_url="{% url 'comment:noti_delete_url' %}">删除消息</a>
+        {% elif request.path == '/comment/notification/unread/' %}
+        <a class="float-right btn btn-success p-0 text-white mark_read f-16" id="mark_read" data-noti_id="{{ each.id }}" data-csrf="{{ csrf_token }}"
+           data-ajax_url="{% url 'comment:noti_markread_url' %}">标记已读</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endfor %}

@@ -1,0 +1,44 @@
+{% extends "mainapp/base.html" %}
+
+{% load static %}
+
+{% block head_title %}个人中心{% endblock %}
+
+        <!-- Left -->
+    {% block base_left_block %}
+    {% include 'mainapp/base_left.html' %}
+    {% endblock %}
+
+{% block base_middle_block %}
+    <div class="card">
+        <div class="card-header bg-primary text-center"><h3 class="panel-title"><b>{% block user_title %}个人资料{% endblock %}</b></h3></div>
+          <div class="card-body">
+          {% block content %}
+            <!-- List group -->
+            <ul class="list-group">
+              <li class="list-group-item text-center border-0">
+                <img class="avatar border border-primary rounded" src = "{{user.avatar.url}}" alt="{{user.username}}"></img>
+              </li>
+              <li class="list-group-item border-0">
+               <p><span>用户名：</span><span>{{user.username}}</span> </p>
+              </li>
+              <li class="list-group-item border-0">
+               <p><span>邮&emsp;箱：</span><span>{{user.email}}</span> </p>
+              </li>
+              <li class="list-group-item border-0">
+               <p><span>签&emsp;名：</span>{{user.signature}}</p>
+              </li>
+            </ul>
+            <a class="float-right btn btn-primary" href="{% url 'oauth:update_profile' %}">资料更新</a>
+            <a class="float-right btn btn-primary" style="margin-right: 20px" href="{% url 'account_change_password' %}">修改密码</a>
+          {% endblock %}
+          </div>
+    </div>
+
+{% endblock %}
+
+	    <!-- Right -->
+    {% block base_right_block %}
+    <div id="zzsc" class="visible-lg-block"></div>
+    {% include 'mainapp/base_right.html' %}
+    {% endblock %}

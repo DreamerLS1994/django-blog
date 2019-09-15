@@ -1,0 +1,73 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block head_title %}SSR节点在线提取_在线工具{% endblock %}
+
+{% block metas %}
+<meta name="description" content="SSR节点在线提取工具，验证码获取。JerryCoding 免费SSR节点分享。">
+<meta name="keywords" content="ssr,ssr节点,SSR节点,免费ssr,免费SSR节点">
+{% endblock %}
+
+{% block js-file %}
+<script src="{% static 'tools/js/tools.js' %}"></script>
+{% endblock %}
+
+    {% block base_left_block %}
+    {% include 'mainapp/base_left.html' %}
+    {% endblock %}
+
+        <!-- Middle -->
+        {% block base_middle_block %}
+        <!-- 面包屑导航 -->
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb f-17">
+            <li class="breadcrumb-item"><a href="/">首页</a></li>
+            <li class="breadcrumb-item">
+                <a href="/tools">在线工具</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">SSR节点在线提取</li>
+          </ol>
+        </nav>
+
+        <div class="card mb-3">
+          <h3 class="card-header text-center text-white bg-primary f-17"><b>节点在线提取工具</b></h3>
+          
+          <div class="card-body f-16">
+          {% if user.is_authenticated %}
+              <div>
+                <h2><strong>最新节点</strong></h2><hr>
+                <h2><strong>更新时间：{{node.create_date|naturalday}}</strong></h2>
+                <h2><strong>使用量：<u>{% widthratio node.used node.total 100 %}%</u></strong></h2>
+                <h2><strong>验证码：<u>{{code}}</u></strong></h2>
+              </div>
+          {% else %}
+              <div class="text-muted">
+                <h2 class="text-center"><b>您尚未登录，暂时无法获取。<br>请先
+                  <a class="text-danger" href="{% url 'account_login' %}?next={{ request.path }}">登录</a> 或者
+                  <a class="text-danger" href="{% url 'account_signup' %}?next={{ request.path }}">注册</a> 
+                </b></h2>
+              </div>
+          {% endif %}
+              <hr>
+
+              <p>
+                 <b>仅供学习，严禁任何违法用途！</b><br>使用指导说明：
+                 <a href="https://jerrycoding.com/tool/ssr-tool/" target="_blank">https://jerrycoding.com/tool/ssr-tool/</a>
+              </p><hr>
+              <p>常见问题解答：</p>
+              <p>1、公众号输入的验证码格式是什么？为什么老是提示验证码错误？</p>
+              <p><u>答：请注意验证码格式为&ldquo;ssr@验证码&rdquo;，注意大小写，注意没有空格！验证码是从上述网站获取到的！</u></p>
+              <p>2、节点什么时候更新？</p>
+              <p><u>答：没有具体固定的时间，记得多来看看。</u></p>
+              <p>3、节点用不了？提示无互联网连接？</p>
+              <p><u>答：获取节点验证码的界面可以看到节点的使用量，100%的话说明已经用尽。如果没有100%，可能网络波动。</u></p>
+
+          </div>
+      </div>
+    {% endblock %}
+
+    <!-- Right -->
+    {% block base_right_block %}
+    {% include 'mainapp/base_right.html' %}
+    {% endblock %}

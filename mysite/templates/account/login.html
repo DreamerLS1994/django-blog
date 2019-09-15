@@ -1,0 +1,50 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+<!-- 美化表单crispy -->
+{% load crispy_forms_tags %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block user_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+
+<!-- <h1>{% trans "Sign In" %}</h1>-->
+
+{% get_providers as socialaccount_providers %}
+
+{% if socialaccount_providers %}
+
+<!--<div class="socialaccount_ballot">
+
+  <ul class="socialaccount_providers">
+    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+  </ul>
+
+</div>-->
+
+<a class="pull-left" href="/accounts/baidu/login/?next=/" title="百度账号登陆">百度账号登录</a>
+<a class="pull-right" href="/accounts/github/login/?next=/" title="GitHub登陆">GitHub登录</a><hr>
+
+<!--{% include "socialaccount/snippets/provider_list.html" with process="login" %}-->
+
+{% include "socialaccount/snippets/login_extra.html" %}
+
+{% else %}
+<!--<p>{% blocktrans %}If you have not created an account yet, then please
+<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>-->
+{% endif %}
+
+<form class="login" method="POST" action="{% url 'account_login' %}">
+  {% csrf_token %}
+  {{ form|crispy }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+  <button class="float-right primaryAction btn btn-primary" type="submit">{% trans "Sign In" %}</button>
+</form>
+
+{% endblock %}

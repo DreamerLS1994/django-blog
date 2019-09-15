@@ -1,0 +1,43 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block head_title %}本站时间轴{% endblock %}
+
+{% block metas %}
+<meta name="description" content="记录本站建站过程中的一些重大事件。本站是django + bootstrap3搭建的个人博客，博主Jerry。主要记录Jerry编程中的学习笔记，可以理解成一个备忘录网站。这里有博主的建站历程、python学习笔记以及好玩的小程序。希望对你有帮助！一起加油！">
+<meta name="keywords" content="时间轴,jerrycoding">
+{% endblock %}
+
+   {% block base_left_block %}
+    {% include 'mainapp/base_left.html' %}
+    {% endblock %}
+
+    <!-- Middle -->
+    <!-- 面包屑导航 -->
+     {% block base_middle_block %}
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb f-17">
+                <li class="breadcrumb-item"><a href="/">首页</a></li>
+                <li class="breadcrumb-item active " aria-current="page">时间轴</li>
+              </ol>
+            </nav>
+            <div class="card">
+                <div class="card-body p-1">
+                    <ul class="timeline">
+                        {% for each in timelines %}
+                        <li>
+                            <b class="text-success f-17">{{ each.name }}</b><br>
+                            <small class="f-13 text-muted">{{ each.time|naturalday}}</small>
+                            <div class="mt-2 f-16"><p> {{ each.body|safe }}</p></div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endblock %}
+
+    <!-- Right -->
+    {% block base_right_block %}
+    {% include 'mainapp/base_right.html' %}
+    {% endblock %}

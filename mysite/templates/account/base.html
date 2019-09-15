@@ -1,0 +1,13 @@
+{% extends "mainapp/base.html" %}
+
+
+{% block base_middle_block %}
+
+    <div class="card mb-3 mt-2">
+        <div class="card-header bg-primary text-white text-center">
+            <h3><b>{% block user_title %}{% endblock %}</b></h3>
+        </div>
+        <div class="card-body">{% block content %}{% endblock %}</div>
+    </div>
+
+{% endblock %}

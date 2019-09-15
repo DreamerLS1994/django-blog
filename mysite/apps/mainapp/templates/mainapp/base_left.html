@@ -1,0 +1,83 @@
+{% load static %}
+    <!-- 联系方式模块 -->
+    <div class="card mb-3" >
+      <div class="card-header p-2 f-17">
+          <b><i class="my-fa fa fa-bullhorn" aria-hidden="true"></i>博客动态</b>
+      </div>
+      <div class="card-body p-2 f-15">
+	{{settings.blog_news}}
+      </div>
+    </div>
+
+    <!-- 联系方式模块 -->
+    <div class="card">
+      <img class="card-img-top border border-primary" src="{{ settings.wx_qr.url }}"
+           alt="微信扫码" data-toggle="tooltip" data-placement="bottom" title="扫一扫关注我">
+      <div class="card-body text-center p-2">
+        <p class="card-text f-16"><b>扫一扫关注我</b></p>
+          <div class="row">
+              {% if settings.qq_url != '' %}
+              <div class="col-4">
+                  <a href="{{ settings.qq_url }}" data-toggle="tooltip" data-placement="bottom" title="QQ交流" target="_blank">
+                      <i class="fa fa-qq fa-lg" aria-hidden="true"></i></a>
+              </div>
+              {% endif %}
+              {% if settings.mail_url != '' %}
+              <div class="col-4">
+                  <a href="{{ settings.mail_url }}" data-toggle="tooltip" data-placement="bottom" title="发送邮件" target="_blank">
+                      <i class="fa fa-envelope fa-lg"></i></a>
+              </div>
+              {% endif %}
+              {% if settings.github_url != '' %}
+              <div class="col-4">
+                  <a href="{{ settings.github_url }}" data-toggle="tooltip" data-placement="bottom" title="博主的GitHub" target="_blank">
+                      <i class="fa fa-github fa-lg" aria-hidden="true"></i></a>
+              </div>
+              {% endif %}
+          </div>
+      </div>
+    </div>
+
+
+    <!-- 关于模块 -->
+    <div class="card mt-3" >
+      <div class="card-header p-2 f-17">
+        <b><i class="my-fa fa fa-rocket" aria-hidden="true"></i>More</b>
+      </div>
+        <div class="card-body text-center p-1">
+          <div class="row ">
+              <div class="col-4">
+                  <a href="/about" data-toggle="tooltip" data-placement="bottom" title="关于本站" target="_blank">
+                      <i class="fa fa-flag fa-2x" aria-hidden="true"></i></a>
+                  <small class="f-13"><b>关于</b></small>
+              </div>
+              <div class="col-4">
+                  <a href="/timeline" data-toggle="tooltip" data-placement="bottom" title="本站时间轴" target="_blank">
+                      <i class="fa fa-bug fa-2x" aria-hidden="true"></i></a>
+                  <small class="f-13"><b>New</b></small>
+              </div>
+              <div class="col-4">
+                  <a href="/feed" data-toggle="tooltip" data-placement="bottom" title="订阅本站" target="_blank">
+                      <i class="fa fa-rss fa-2x" aria-hidden="true"></i></a>
+                  <small class="f-13"><b>RSS</b></small>
+              </div>
+          </div>
+        </div>
+
+    </div>
+
+    <!-- 友链模块 -->
+    <div class="card mt-3 mb-3" >
+      <div class="card-header p-2 f-17">
+          <b><i class="my-fa fa fa-link" aria-hidden="true"></i>友链</b>
+      </div>
+      <ul class="list-group list-group-flush f-16">
+          {% for link in friendlinks %}
+              <li class="list-group-item">
+                  <a href="{{link.url}}" data-toggle="tooltip" data-placement="bottom" title="{{link.summary}}" target="_blank">
+                      {{link.name}}
+                  </a>
+              </li>
+          {% endfor %}
+      </ul>
+    </div>

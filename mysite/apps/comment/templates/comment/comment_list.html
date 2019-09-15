@@ -1,0 +1,64 @@
+{% load static %}
+{% load humanize %}
+
+<div class="card mb-3">
+  <div class="card-body p-2">
+    <h2 class="f-17"><b>{{ this_article.get_commenter_count }} 人参与 | {{ this_article.get_comment_count }} 条评论</b></h2>
+      <ul class = "list-group list-group-flush">
+          {% for each in comments %}
+              {% if each.is_parent is False %}
+              {% else %}
+          <li class="list-group-item p-2">
+              <div class="media" id="cmt-{{ each.id }}">
+                  <img class="mr-1 w-25 comment-avatar" src="{{ each.owner.avatar.url }}" alt="{{ each.owner.name }}">
+                  <div class="media-body">
+                      <div class="mb-2">
+                          <b class="f-16">{{ each.owner.username }}：</b>
+                          <div class="text-muted float-right f-13">{{ each.create_date|naturalday }}</div>
+                      </div>
+                      <div class="f-15">{{ each.body|safe }}</div>
+                      <p>
+                     {% if user.is_authenticated %}
+                      <a class="btn_comment float-right" href="#myeditor" id="parent_reply" target="_self"
+                            data-comment_id="{{each.id}}" data-reply_to_username="{{each.owner}}">
+                            <div class="f-15">回复</div></a>
+                     {% else %}
+                      <a href="{% url 'account_login' %}?next={{request.path}}"><div class="f-15">回复</div></a>
+                     {%endif%}
+                      </p>
+                    {% if each.get_child_comment %}
+                    <ul class = "list-group list-group-flush" style="margin-top: 50px">
+
+                    {% for each2 in each.get_child_comment%}
+                        <li class="list-group-item p-2 ">
+                          <div class="media" id="cmt-{{ each2.id }}">
+                              <img class="mr-1 w-25 comment-avatar" src="{{ each2.owner.avatar.url }}" alt="{{ each2.owner.name }}">
+                              <div class="media-body">
+                                  <div class="mb-2">
+                                      <b class="f-16">{{ each2.owner.username }}：</b>
+                                      <div class="text-muted float-right f-13">{{ each2.create_date|naturalday }}</div>
+                                  </div>
+                                  <div class="f-15">{{ each2.body|safe }}</div>
+                                  {% if user.is_authenticated %}
+                                  <a class="btn_comment2 float-right mb-1" href="#myeditor" target="_self"
+                                     data-comment_id="{{each.id}}" data-reply_id="{{each2.id}}"
+                                        data-child_comment_owner="{{each2.owner.username}}">
+                                      <div class="f-15">回复</div></a>
+                                  {%else%}
+                                  <a href="{% url 'account_login' %}?next={{request.path}}"><div class="f-15">回复</div></a>
+                                  {%endif%}
+                              </div>
+                          </div>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+                  </div>
+              </div>
+          </li>
+              {% endif %}
+          {% endfor %}
+      </ul>
+  </div>
+</div>
+

@@ -1,0 +1,84 @@
+{% load static %}
+{% load humanize %}
+    <div id="zzsc" class="d-none d-md-block"></div>
+
+    <div class="card mb-3 mt-2">
+      <div class="card-header p-2 f-17">
+          <b><i class="my-fa fa fa-coffee" aria-hidden="true"></i>每日一句 (From ONE)</b>
+      </div>
+      <div class="card-body p-2 f-15">
+	{{one|safe}}
+      </div>
+    </div>
+    <!-- 分类模块 -->
+    <div class="card mb-3">
+      <div class="card-header p-2 f-17">
+          <b><i class="my-fa fa fa-book" aria-hidden="true"></i>文章分类</b>
+      </div>
+      <ul class="list-group list-group-flush">
+          {% for each in catalogues %}
+              <li class="list-group-item f-16">
+                  <a href="{% url 'mainapp:catalogue_detail_url' each.slug %}" data-toggle="tooltip" 
+                            data-placement="bottom" title="{{each.name}}" target="_blank">
+                      {{each.name}}
+                      <span class="badge badge-warning float-right mt-1">{{ each.get_articlecount }}</span>
+                  </a>
+              </li>
+          {% endfor %}
+      </ul>
+    </div>
+    <!-- 标签模块 -->
+    <div class="card mb-3" >
+      <div class="card-header p-2 f-17">
+          <b><i class="my-fa fa fa-tags" aria-hidden="true"></i>标签云</b>
+      </div>
+      <div class="card-body p-2 f-16">
+          {% for each in tags %}
+              {% if forloop.counter|add:0|divisibleby:5 %}
+              <a href="{% url 'mainapp:tag_detail_url' each.slug %}" target="_blank">
+                  <span class="badge badge-pill badge-danger">{{each.name}}</span></a>
+              {% endif %}
+              {% if forloop.counter|add:-1|divisibleby:5 %}
+              <a href="{% url 'mainapp:tag_detail_url' each.slug %}" target="_blank">
+                  <span class="badge badge-pill badge-primary">{{each.name}}</span></a>
+              {% endif %}
+              {% if forloop.counter|add:-2|divisibleby:5 %}
+              <a href="{% url 'mainapp:tag_detail_url' each.slug %}" target="_blank">
+                  <span class="badge badge-pill badge-secondary">{{each.name}}</span></a>
+              {% endif %}
+              {% if forloop.counter|add:-3|divisibleby:5 %}
+              <a href="{% url 'mainapp:tag_detail_url' each.slug %}" target="_blank">
+                  <span class="badge badge-pill badge-success">{{each.name}}</span></a>
+              {% endif %}
+              {% if forloop.counter|add:-4|divisibleby:5 %}
+              <a href="{% url 'mainapp:tag_detail_url' each.slug %}" target="_blank">
+                  <span class="badge badge-pill badge-warning">{{each.name}}</span></a>
+              {% endif %}
+
+          {% endfor %}
+      </div>
+    </div>
+
+    <!-- 推荐模块 -->
+    {% if randoms %}
+    <div class="card mb-3">
+      <div class="card-header p-2 f-17">
+          <b><i class="my-fa fa fa-random" aria-hidden="true"></i>随机推荐</b>
+      </div>
+      <ul class="list-group list-group-flush">
+          {% for each in randoms %}
+              <li class="list-group-item f-16 p-2">
+                  <a href="{% url 'mainapp:article_detail_url' each.slug %}" data-toggle="tooltip" 
+                        data-placement="bottom" title="{{each.title}}" target="_blank">
+                      <b class="f-14 d-none d-md-block">{{each.title|truncatechars:18}}...</b>
+                      <b class="f-14 d-block d-md-none">{{each.title}}</b>
+                  </a>
+                  <div class="text-muted f-12">
+                      <span>{{ each.create_date|naturalday }}</span>
+                  </div>
+
+              </li>
+          {% endfor %}
+      </ul>
+    </div>
+    {% endif %}

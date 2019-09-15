@@ -1,0 +1,22 @@
+{% load static %}
+<script src="{% static 'comment/js/ckeditor.js' %}" crossorigin="anonymous"></script>
+
+<div class="card mt-1">
+    {% if user.is_authenticated %}
+  <div class="card-body p-1 f-16" id="myeditor">
+    <p><textarea name="content" id="_editor" class="w-100"></textarea></p>
+      <script src="{% static 'comment/js/comment.js' %}" crossorigin="anonymous"></script>
+
+      <button class="btn btn-primary float-right f-17" id="comment_submit"
+              data-csrf="{{ csrf_token }}" data-article_id="{{this_article.id}}"
+              data-ajax_url="{% url 'comment:cmt_add_url' %}">评论
+      </button>
+  </div>
+    {% else %}
+  <div class="card-body text-primary text-center f-17">
+    <b>您尚未登录，暂时无法评论。请先
+	    <a class="text-danger" href="{% url 'account_login' %}?next={{ request.path }}">登录</a> 或者
+        <a class="text-danger" href="{% url 'account_signup' %}?next={{ request.path }}">注册</a> </b>
+  </div>
+    {% endif %}
+</div>

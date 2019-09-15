@@ -1,0 +1,101 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block head_title %}全站搜索：{{ query }}{% endblock %}
+{% load highlight %}
+
+{% block metas %}
+<meta name="description" content="基于Django-haystack的网站全文搜索，可以对文章标题以及内容进行搜索，返回全站标题或者内容中含有关键字的文章。">
+<meta name="keywords" content="{{query}},django-haystack,全站搜索,jerrycoding">
+{% endblock %}
+
+{% block css-file %}
+
+{% endblock %}
+
+{% block base_middle_block %}
+
+    <!-- 面包屑导航 -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb f-17">
+        <li class="breadcrumb-item"><a href="/">首页</a></li>
+        <li class="breadcrumb-item active " aria-current="page">搜索</li>
+      </ol>
+    </nav>
+
+    {% if query %}
+    <div class="card ">
+      <div class="card-header f-17">
+          <b><i class="my-fa fa fa-search" aria-hidden="true"></i>关键字：{% highlight query with query%}</b>
+      </div>
+      <div class="card-body p-2">
+        <p class="card-text f-16">基于Django-haystack的网站全文搜索，可以对文章标题以及内容进行搜索，返回全站标题或者内容中含有关键字的文章。</p>
+      </div>
+    </div>
+
+
+    {% for each in page.object_list %}
+    <div class="my-card card mt-3">
+        <div class="card-body">
+            <div class="media">
+              <img class="align-self-center mr-3 w-25 my-img" src="https://cdn.jerrycoding.com/media/{{ each.object.img }}" alt="{{ each.object.title }}">
+              <div class="media-body">
+                <h2 class="mt-0 f-17"><a href="{% url 'mainapp:article_detail_url' each.object.slug %}" target="_blank">
+                    <b>{% highlight each.object.title with query %}</b></a></h2>
+                  {% with each.object.body|safe as this_body %}
+                      <p class="f-15">{% highlight this_body with query max_length 200 %}</p>
+                    {% endwith %}
+              </div>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+          <div class="f-12">
+              <a href="{% url 'mainapp:catalogue_detail_url' each.object.catalogue.slug %}" target="_blank">
+                  <span><i class="my-fa fa fa-book" aria-hidden="true">《{{ each.object.catalogue.name}}》</i></span>
+              </a>
+              <span><i class="my-fa fa fa-calendar ml-2" aria-hidden="true"></i>{{ each.object.create_date|naturalday }}</span>
+              <span><i class="my-fa fa fa-eye ml-2" aria-hidden="true"></i>{{each.object.readings}}</span>&nbsp;
+              <span><i class="my-fa fa fa-comments ml-2" aria-hidden="true"></i>{{ each.object.get_comment_count }}</span>
+              <span><i class="my-fa fa fa-thumbs-up ml-2" aria-hidden="true"></i>{{ each.object.like_num }}</span>
+
+              <a class="float-right text-danger d-none d-lg-block" href="{% url 'mainapp:article_detail_url' each.object.slug %}" target="_blank">
+                  <b>开始阅读→</b>
+              </a>
+          </div>
+        </div>
+    </div>
+    {% empty %}
+      <div class="card mt-2">
+          <div class="card-body text-center bg-muted p-2 text-danger">
+            <h5><b>啊偶！未搜索到相关文章..</b></h5>
+          </div>
+      </div>
+    {% endfor %}
+
+<div class="m-4 f-17" >
+    {% if page.has_previous or page.has_next %}
+
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+                {% if page.has_previous %}
+              <a class="page-link" href="?q={{query}}&page={{ page.previous_page_number }}">上一页</a>
+                {% endif %}
+            </li>
+            <li class="page-item">
+                <a class="page-link disabled">{{page.number}}/{{page.paginator.num_pages}}</a>
+            </li>
+            <li class="page-item">
+                {% if page.has_next %}
+              <a class="page-link" href="?q={{query}}&page={{ page.next_page_number }}">下一页</a>
+                {% endif %}
+            </li>
+          </ul>
+        </nav>
+
+    {% endif %}
+    </div>
+{% endif %}
+
+{% endblock %}	

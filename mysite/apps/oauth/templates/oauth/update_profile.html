@@ -1,0 +1,31 @@
+{% extends "mainapp/base.html" %}
+
+{% load static %}
+
+{% block head_title %}资料更新{% endblock %}
+{% load crispy_forms_tags %}
+
+        <!-- Left -->
+    {% block base_left_block %}
+    {% include 'mainapp/base_left.html' %}
+    {% endblock %}
+
+{% block base_middle_block %}
+    <div class="card ">
+        <div class="card-header bg-primary text-center"><h3 class="panel-title"><b>{% block user_title %}更新资料{% endblock %}</b></h3></div>
+        <div class="card-body">
+            <form class="update_profile", method="post" enctype="multipart/form-data" action="{% url 'oauth:update_profile' %}">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class="float-right btn btn-primary" type="submit">确认更新</button>
+            </form>
+          </div>
+    </div>
+
+{% endblock %}
+
+	    <!-- Right -->
+    {% block base_right_block %}
+    <div id="zzsc" class="visible-lg-block"></div>
+    {% include 'mainapp/base_right.html' %}
+    {% endblock %}

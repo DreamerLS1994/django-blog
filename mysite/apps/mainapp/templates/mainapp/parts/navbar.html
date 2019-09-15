@@ -1,0 +1,64 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3 border-bottom">
+  <a class="navbar-brand p-0 ml-2 mr-2" href="/"><img src="https://cdn.jerrycoding.com/media/brand/logo.png" alt="Brand" style="height:50px" /></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto f-17">
+      <li class="nav-item {% if request.path == '/' %} active {% endif %}">
+        <a class="nav-link" href="/">
+            <i class="fa fa-home" aria-hidden="true"></i>首页
+            <span class="sr-only">(current)</span></a>
+      </li>
+
+      <li class="nav-item {% if request.path == '/archives/' %} active {% endif %}">
+        <a class="nav-link" href="/archives/">
+            <i class="fa fa-folder" aria-hidden="true"></i>归档</a>
+      </li>
+
+      <li class="nav-item {% if request.path == '/tools/' %} active {% endif %}">
+        <a class="nav-link" href="/tools/">
+            <i class="fa fa-gavel" aria-hidden="true"></i>工具</a>
+      </li>
+
+    </ul>
+    <form class="form-inline my-2 my-lg-0 mr-4 f-17" method="get" action="{% url 'haystack_search' %}">
+      <input class="form-control mr-sm-2" type="search" name="q" placeholder="输入关键字" aria-label="Search" required="True">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
+    </form>
+
+    <ul class="navbar-nav f-17">
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img class="avatar_nav rounded-circle border border-primary" src="{{user.avatar.url}}" alt="{{user.username}}">
+                    {% if user.get_unread_notis|length != 0 %}
+                <span class="badge badge-pill badge-warning ">{{ user.get_unread_notis|length }}</span>
+                    {% endif %}
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item pl-2" href="{% url 'oauth:account_profile' %}"><i class="my-fa fa fa-user mr-2" aria-hidden="true"></i>
+                    <b class="text-info">{{user.username}}</b></a>
+              <div class="dropdown-divider"></div>
+                <a class="dropdown-item pl-2" href="{% url 'comment:noti_unread_url' %}">
+                  <i class="my-fa fa fa-bell" aria-hidden="true"></i>未读消息
+                  <span class="badge badge-pill badge-warning ml-3">{{ user.get_unread_notis|length }}</span>
+              </a>
+
+              {% if user.is_staff %}
+              <a class="dropdown-item pl-2" href="{% url 'xadmin:index' %}"><i class="my-fa fa fa-cog" aria-hidden="true"></i>后台管理</a>
+              {% endif %}
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item pl-2" href="{% url 'account_logout' %}?next={{ request.path }}"><i class="my-fa fa fa-power-off" aria-hidden="true"></i>注销</a>
+            </div>
+        </li>
+         {% else %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}?next={{ request.path }}">登录</a> </li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'account_signup' %}?next={{ request.path }}">注册</a></li>
+	    {% endif %}
+    </ul>
+  </div>
+</nav>

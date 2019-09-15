@@ -1,0 +1,33 @@
+{% extends "mainapp/base.html" %}
+{% load static %}
+
+    {% block base_left_block %}
+    {% include 'mainapp/base_left.html' %}
+    {% endblock %}
+
+    {% block base_middle_block %}
+    {% include 'mainapp/parts/carousel.html' %}
+    <ul class="nav nav-tabs mt-2">
+      <li class="nav-item f-15">
+          {% if request.path == '/' %}
+          <a class="nav-link active" href="/"><i class="my-fa fa fa-clock-o" aria-hidden="true"></i>时间排序</a>
+          {% else %}
+          <a class="nav-link" href="/"><i class="my-fa fa fa-clock-o" aria-hidden="true"></i>时间排序</a>
+          {% endif %}
+      </li>
+      <li class="nav-item f-15">
+          {% if request.path == '/hot/' %}
+          <a class="nav-link active" href="/hot"><i class="my-fa fa fa-fire" aria-hidden="true"></i>热度排序</a>
+          {% else %}
+          <a class="nav-link" href="/hot"><i class="my-fa fa fa-fire" aria-hidden="true"></i>热度排序</a>
+          {% endif %}
+      </li>
+    </ul>
+    {% include 'mainapp/parts/article_list.html' %}
+
+    {% endblock %}
+
+    <!-- Right -->
+    {% block base_right_block %}
+    {% include 'mainapp/base_right.html' %}
+    {% endblock %}

@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /accounts/
+Disallow: /admin/
+Disallow: /xadmin/
+Disallow: /search/
+Disallow: /comment/
+
+Sitemap: https://www.xxxxxxx.com/sitemap.xml
