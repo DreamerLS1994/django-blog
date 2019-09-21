@@ -1,0 +1,10 @@
+Django==2.2.5
+django-allauth==0.39.1
+django-ckeditor==5.7.1
+django-crispy-forms==1.7.2
+django-haystack==2.8.1
+django-imagekit==4.0.2
+jieba==0.39
+Pillow==6.1.0
+Whoosh==2.7.4
+xadmin2==2.0.1
