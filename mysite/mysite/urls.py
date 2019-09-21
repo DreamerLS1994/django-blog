@@ -22,7 +22,6 @@ from django.contrib.sitemaps.views import sitemap
 from mainapp.sitemaps import ArticleSitemap, CatalogueSitemap, TagSitemap, ToolSitemap
 from mainapp.views import page_not_found, page_forbidden, page_error
 from django.views.generic import TemplateView
-from rest_framework_jwt.views import obtain_jwt_token
 
 import xadmin
 
