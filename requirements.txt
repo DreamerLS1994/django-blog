@@ -1,4 +1,4 @@
-Django==2.2.5
+Django==2.2.24
 django-allauth==0.39.1
 django-ckeditor==5.7.1
 django-crispy-forms==1.7.2
